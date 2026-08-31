@@ -3,34 +3,33 @@ export default function ConfidenceMeter({
 }: {
   confidence: number;
 }) {
-  const color =
+  const colorClass =
     confidence >= 70
-      ? "var(--app-green)"
+      ? "text-green"
       : confidence >= 40
-        ? "var(--app-amber)"
-        : "var(--app-red)";
+        ? "text-amber"
+        : "text-red";
+
+  const barColor =
+    confidence >= 70 ? "bg-green" : confidence >= 40 ? "bg-amber" : "bg-red";
 
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between">
-        <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--app-muted)]">
+        <span className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">
           Confidence
         </span>
 
-        <span
-          className="font-mono text-xs font-semibold"
-          style={{ color }}
-        >
+        <span className={`font-mono text-xs font-semibold ${colorClass}`}>
           {confidence}%
         </span>
       </div>
 
-      <div className="h-1.5 overflow-hidden rounded bg-[var(--app-grid)]">
+      <div className="h-1.5 overflow-hidden rounded bg-grid">
         <div
-          className="h-full transition-[width] duration-500 ease-out"
+          className={`h-full transition-[width] duration-500 ease-out ${barColor}`}
           style={{
             width: `${confidence}%`,
-            backgroundColor: color,
           }}
         />
       </div>

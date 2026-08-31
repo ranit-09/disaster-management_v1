@@ -40,13 +40,10 @@ export default function VerifyCard({
 }: {
   incident: VerifiableIncident;
   busy: boolean;
-  onVote: (
-    id: string,
-    vote: "confirm" | "deny"
-  ) => void;
+  onVote: (id: string, vote: "confirm" | "deny") => void;
 }) {
   return (
-    <div className="rounded-[6px] border border-[var(--app-grid-strong)] bg-[var(--app-bg-deep)] p-6">
+    <div className="rounded-[6px] border border-border bg-bg-deep p-6">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <span className="flex items-center gap-2 font-mono text-sm">
@@ -61,7 +58,7 @@ export default function VerifyCard({
           <StatusBadge status={incident.status} />
 
           {incident.verified && (
-            <span className="rounded-full border border-[rgba(79,216,184,0.4)] px-2.5 py-1 font-mono text-[11px] text-[var(--app-green)]">
+            <span className="rounded-full border border-green-border px-2.5 py-1 font-mono text-[11px] text-green">
               verified
             </span>
           )}
@@ -72,10 +69,9 @@ export default function VerifyCard({
       <ConfidenceMeter confidence={incident.confidence} />
 
       {/* Metadata */}
-      <div className="my-[10px] mb-4 font-mono text-[11px] text-[var(--app-muted)]">
+      <div className="my-[10px] mb-4 font-mono text-[11px] text-muted">
         {incident.confirmations} confirm
-        {incident.confirmations === 1 ? "" : "s"} ·{" "}
-        {incident.rejections} den
+        {incident.confirmations === 1 ? "" : "s"} · {incident.rejections} den
         {incident.rejections === 1 ? "y" : "ies"} ·{" "}
         {incident.reporterIds.length} reporter
         {incident.reporterIds.length === 1 ? "" : "s"} · updated{" "}
@@ -87,12 +83,42 @@ export default function VerifyCard({
         <button
           disabled={busy}
           onClick={() => onVote(incident.id, "confirm")}
+          className="
+            cursor-pointer
+            rounded-[4px]
+            border
+            border-green-border
+            bg-green-soft
+            px-4
+            py-2
+            text-sm
+            font-semibold
+            text-green
+            transition
+            hover:brightness-110
+            disabled:cursor-not-allowed
+            disabled:opacity-50
+          "
         >
           👍 Confirm
         </button>
 
         <button
-          className="border border-[var(--app-grid-strong)] bg-transparent text-[var(--app-fg)]"
+          type="button"
+          className="cursor-pointer
+            rounded-[4px]
+            border
+            border-border
+            bg-transparent
+            px-4
+            py-2
+            text-sm
+            font-semibold
+            text-fg
+            transition
+            hover:border-amber
+            disabled:cursor-not-allowed
+            disabled:opacity-50"
           disabled={busy}
           onClick={() => onVote(incident.id, "deny")}
         >

@@ -19,7 +19,9 @@ export default function ReportPage() {
   const [latitude, setLatitude] = useState("22.5726");
   const [longitude, setLongitude] = useState("88.3639");
   const [locating, setLocating] = useState(false);
+  const [locationError, setLocationError] = useState("");
 
+  const [address, setAddress] = useState("");
   const [hazardType, setHazardType] = useState("");
   const [severity, setSeverity] = useState("");
   const [description, setDescription] = useState("");
@@ -30,17 +32,32 @@ export default function ReportPage() {
   const [error, setError] = useState("");
 
   function detectLocation() {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) {
+      setLocationError("This browser doesn't support geolocation — enter coordinates or an address manually.");
+      return;
+    }
 
     setLocating(true);
-
+    setLocationError("");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setLatitude(pos.coords.latitude.toFixed(6));
         setLongitude(pos.coords.longitude.toFixed(6));
         setLocating(false);
       },
-      () => setLocating(false)
+      (err) => {
+        setLocating(false);
+        if (err.code === err.PERMISSION_DENIED) {
+          setLocationError("Location permission denied — allow it in your browser's site settings and try again.");
+        } else if (err.code === err.POSITION_UNAVAILABLE) {
+          setLocationError("Position unavailable — GPS/network location couldn't be determined right now.");
+        } else if (err.code === err.TIMEOUT) {
+          setLocationError("Location request timed out — try again, or enter coordinates/address manually.");
+        } else {
+          setLocationError("Couldn't get your location — enter coordinates or an address manually.");
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   }
 
@@ -52,6 +69,7 @@ export default function ReportPage() {
     setResult(null);
 
     try {
+      //const {data} = await axios.post("")
       const response = await axios.post("/api/report", {
         latitude: parseFloat(latitude),
         longitude: parseFloat(longitude),
@@ -62,9 +80,11 @@ export default function ReportPage() {
         reporterId: "web_user",
       });
 
+
       setResult(response.data);
 
       // Reset form fields
+      setAddress("");
       setHazardType("");
       setSeverity("");
       setDescription("");
@@ -84,15 +104,15 @@ export default function ReportPage() {
     <div className="mx-auto max-w-[920px] px-6 pt-8 pb-20">
       {/* PAGE HEADER */}
       <div className="mb-7">
-        <div className="mb-2.5 font-mono text-xs uppercase tracking-[0.1em] text-[var(--app-amber)]">
+        <div className="mb-2.5 font-mono text-xs uppercase tracking-[0.1em] text-amber">
           Flow 01
         </div>
 
-        <h1 className="mb-2 font-[var(--font-display)] text-[28px] font-bold">
+        <h1 className="mb-2 font-display text-[28px] font-bold">
           Report a hazard
         </h1>
 
-        <p className="max-w-[560px] text-[14.5px] text-[var(--app-muted)]">
+        <p className="max-w-[560px] text-[14.5px] text-muted">
           Drop a pin, pick what you're seeing, and submit. Leave
           hazard type or severity unselected to let the description
           auto-fill them.
@@ -104,11 +124,11 @@ export default function ReportPage() {
         {/* REPORT FORM */}
         <form
           onSubmit={submit}
-          className="rounded-[6px] border border-[var(--app-grid-strong)] bg-[var(--app-bg-deep)] p-6"
+          className="rounded-[6px] border border-border bg-bg-deep p-6"
         >
           {/* LOCATION */}
           <div className="mb-4 flex flex-col gap-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--app-muted)]">
+            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">
               Location
             </label>
 
@@ -123,14 +143,14 @@ export default function ReportPage() {
                   flex-1
                   rounded-[4px]
                   border
-                  border-[var(--app-grid-strong)]
-                  bg-[var(--app-bg)]
+                  border-border
+                  bg-bg
                   px-3
                   py-2.5
                   text-sm
-                  text-[var(--app-fg)]
+                  text-fg
                   outline-none
-                  focus:border-[var(--app-amber)]
+                  focus:border-amber
                 "
               />
 
@@ -144,14 +164,14 @@ export default function ReportPage() {
                   flex-1
                   rounded-[4px]
                   border
-                  border-[var(--app-grid-strong)]
-                  bg-[var(--app-bg)]
+                  border-border
+                  bg-bg
                   px-3
                   py-2.5
                   text-sm
-                  text-[var(--app-fg)]
+                  text-fg
                   outline-none
-                  focus:border-[var(--app-amber)]
+                  focus:border-amber
                 "
               />
             </div>
@@ -165,15 +185,15 @@ export default function ReportPage() {
                 cursor-pointer
                 rounded-[4px]
                 border
-                border-[var(--app-grid-strong)]
+                border-border
                 bg-transparent
                 px-5
                 py-[11px]
                 text-sm
                 font-semibold
-                text-[var(--app-fg)]
+                text-fg
                 transition
-                hover:bg-[var(--app-grid)]
+                hover:bg-grid
                 disabled:cursor-not-allowed
                 disabled:opacity-50
               "
@@ -186,7 +206,7 @@ export default function ReportPage() {
 
           {/* HAZARD TYPE */}
           <div className="mb-4 mt-5 flex flex-col gap-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--app-muted)]">
+            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">
               Hazard type (optional if description given)
             </label>
 
@@ -198,7 +218,7 @@ export default function ReportPage() {
 
           {/* SEVERITY */}
           <div className="mb-4 mt-5 flex flex-col gap-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--app-muted)]">
+            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">
               Severity (optional)
             </label>
 
@@ -210,7 +230,7 @@ export default function ReportPage() {
 
           {/* DESCRIPTION */}
           <div className="mb-4 mt-5 flex flex-col gap-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--app-muted)]">
+            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">
               Description
             </label>
 
@@ -223,21 +243,21 @@ export default function ReportPage() {
                 resize-y
                 rounded-[4px]
                 border
-                border-[var(--app-grid-strong)]
-                bg-[var(--app-bg)]
+                border-border
+                bg-bg
                 px-3
                 py-2.5
                 text-sm
-                text-[var(--app-fg)]
+                text-fg
                 outline-none
-                focus:border-[var(--app-amber)]
+                focus:border-amber
               "
             />
           </div>
 
           {/* PHOTO */}
           <div className="mb-4 flex flex-col gap-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-[var(--app-muted)]">
+            <label className="font-mono text-[11px] uppercase tracking-[0.06em] text-muted">
               Photo
             </label>
 
@@ -256,12 +276,12 @@ export default function ReportPage() {
               cursor-pointer
               rounded-[4px]
               border-none
-              bg-[var(--app-amber)]
+              bg-amber
               px-5
               py-[11px]
               text-sm
               font-semibold
-              text-[var(--app-bg-deep)]
+              text-bg-deep
               transition
               hover:brightness-110
               disabled:cursor-not-allowed
@@ -273,21 +293,21 @@ export default function ReportPage() {
 
           {/* ERROR */}
           {error && (
-            <div className="mt-2 text-[13px] text-[var(--app-red)]">
+            <div className="mt-2 text-[13px] text-red">
               {error}
             </div>
           )}
         </form>
 
         {/* RESPONSE */}
-        <div className="rounded-[6px] border border-[var(--app-grid-strong)] bg-[var(--app-bg-deep)] p-6">
-          <h3 className="mb-3.5 font-[var(--font-display)] text-[15px]">
+        <div className="rounded-[6px] border border-border bg-bg-deep p-6">
+          <h3 className="mb-3.5 font-display text-[15px]">
             Response
           </h3>
 
           {/* EMPTY STATE */}
           {!result && (
-            <div className="py-6 text-center text-sm text-[var(--app-muted)]">
+            <div className="py-6 text-center text-sm text-muted">
               Submit a report to see the processed incident here.
             </div>
           )}
@@ -307,7 +327,7 @@ export default function ReportPage() {
                     py-1
                     font-mono
                     text-[11px]
-                    text-[var(--app-green)]
+                    text-green
                   "
                 >
                   {result.merged
@@ -326,7 +346,7 @@ export default function ReportPage() {
                       py-1
                       font-mono
                       text-[11px]
-                      text-[var(--app-amber)]
+                      text-amber
                     "
                   >
                     fields auto-extracted from description
@@ -346,7 +366,7 @@ export default function ReportPage() {
                     w-full
                     rounded-[4px]
                     border
-                    border-[var(--app-grid-strong)]
+                    border-border
                     object-cover
                   "
                 />
@@ -358,7 +378,7 @@ export default function ReportPage() {
                   whitespace-pre-wrap
                   font-mono
                   text-[12.5px]
-                  text-[var(--app-muted)]
+                  text-muted
                 "
               >
                 {JSON.stringify(

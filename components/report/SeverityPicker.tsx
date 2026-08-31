@@ -33,20 +33,18 @@ export default function SeverityPicker({
 
         const activeClasses =
           severity.value === "low"
-            ? "border-[var(--app-green)] bg-[rgba(79,216,184,0.13)] text-[var(--app-green)]"
+            ? "border-green bg-green-soft text-green"
             : severity.value === "medium"
-            ? "border-[#f2d16a] bg-[rgba(242,209,106,0.13)] text-[#f2d16a]"
-            : severity.value === "high"
-            ? "border-[var(--app-amber)] bg-[rgba(242,161,84,0.13)] text-[var(--app-amber)]"
-            : "border-[var(--app-red)] bg-[rgba(255,107,94,0.13)] text-[var(--app-red)]";
+              ? "border-yellow bg-yellow-soft text-yellow"
+              : severity.value === "high"
+                ? "border-amber bg-amber-soft text-amber"
+                : "border-red bg-red-soft text-red";
 
         return (
           <button
             type="button"
             key={severity.value}
-            onClick={() =>
-              onChange(active ? "" : severity.value)
-            }
+            onClick={() => onChange(active ? "" : severity.value)}
             className={`
               flex-1
               cursor-pointer
@@ -64,7 +62,7 @@ export default function SeverityPicker({
               ${
                 active
                   ? activeClasses
-                  : "border-[var(--app-grid-strong)] bg-[var(--app-bg)] text-[var(--app-muted)] hover:border-[var(--app-amber)]"
+                  : "border-border bg-bg text-muted hover:border-amber"
               }
             `}
           >

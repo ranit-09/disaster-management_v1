@@ -28,9 +28,7 @@ export default function HazardTypeGrid({
           <button
             type="button"
             key={hazard.value}
-            onClick={() =>
-              onChange(active ? "" : hazard.value)
-            }
+            onClick={() => onChange(active ? "" : hazard.value)}
             className={`
               flex
               cursor-pointer
@@ -49,14 +47,12 @@ export default function HazardTypeGrid({
               duration-150
               ${
                 active
-                  ? "border-[var(--app-amber)] bg-[rgba(242,161,84,0.1)] text-[var(--app-amber)]"
-                  : "border-[var(--app-grid-strong)] bg-[var(--app-bg)] text-[var(--app-muted)] hover:border-[var(--app-amber)]"
+                  ? "border-amber bg-amber-soft text-amber"
+                  : "border-border bg-bg text-muted hover:border-amber"
               }
             `}
           >
-            <span className="text-[22px]">
-              {hazardIcon(hazard.value)}
-            </span>
+            <span className="text-[22px]">{hazardIcon(hazard.value)}</span>
 
             {hazard.label}
           </button>

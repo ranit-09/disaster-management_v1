@@ -50,15 +50,15 @@ export default function Home() {
     <div className="mx-auto max-w-[920px] px-6 pt-8 pb-20">
       {/* PAGE HEADER */}
       <div className="mb-7">
-        <div className="mb-2.5 font-mono text-xs uppercase tracking-[0.1em] text-[var(--app-amber)]">
+        <div className="mb-2.5 font-mono text-xs uppercase tracking-[0.1em] text-amber">
           Command Overview
         </div>
 
-        <h1 className="mb-2 font-[var(--font-display)] text-[28px] font-bold">
+        <h1 className="mb-2 font-display text-[28px] font-bold">
           Live incident dashboard.
         </h1>
 
-        <p className="max-w-[560px] text-[14.5px] text-[var(--app-muted)]">
+        <p className="max-w-[560px] text-[14.5px] text-muted">
           Report hazards, watch the live map update, and get routes that
           avoid what&apos;s actually happening on the ground right now.
         </p>
@@ -67,30 +67,30 @@ export default function Home() {
       {/* STATS */}
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3">
         {/* CRITICAL */}
-        <div className="rounded-[6px] border border-[var(--app-grid-strong)] bg-[var(--app-bg-deep)] p-6">
-          <div className="mb-2 font-mono text-xs text-[var(--app-muted)]">
+        <div className="rounded-[6px] border border-border bg-bg-deep p-6">
+          <div className="mb-2 font-mono text-xs text-muted">
             CRITICAL
           </div>
 
-          <div className="text-[32px] font-bold text-[var(--app-red)]">
+          <div className="text-[32px] font-bold bg-red">
             {counts.critical}
           </div>
         </div>
 
         {/* HIGH */}
-        <div className="rounded-[6px] border border-[var(--app-grid-strong)] bg-[var(--app-bg-deep)] p-6">
-          <div className="mb-2 font-mono text-xs text-[var(--app-muted)]">
+        <div className="rounded-[6px] border border-border bg-bg-deep p-6">
+          <div className="mb-2 font-mono text-xs text-muted">
             HIGH
           </div>
 
-          <div className="text-[32px] font-bold text-[var(--app-amber)]">
+          <div className="text-[32px] font-bold text-amber">
             {counts.high}
           </div>
         </div>
 
         {/* TOTAL */}
-        <div className="rounded-[6px] border border-[var(--app-grid-strong)] bg-[var(--app-bg-deep)] p-6">
-          <div className="mb-2 font-mono text-xs text-[var(--app-muted)]">
+        <div className="rounded-[6px] border border-border bg-bg-deep p-6">
+          <div className="mb-2 font-mono text-xs text-muted">
             ACTIVE TOTAL
           </div>
 
@@ -108,12 +108,12 @@ export default function Home() {
               cursor-pointer
               rounded-[4px]
               border-none
-              bg-[var(--app-amber)]
+              bg-amber
               px-5
               py-[11px]
               text-sm
               font-semibold
-              text-[var(--app-bg-deep)]
+              text-bg-deep
               transition
               hover:brightness-110
             "
@@ -128,7 +128,7 @@ export default function Home() {
               cursor-pointer
               rounded-[4px]
               border
-              border-[var(--app-grid-strong)]
+              border-border
               bg-transparent
               px-5
               py-[11px]
@@ -136,7 +136,7 @@ export default function Home() {
               font-semibold
               text-[var(--app-fg)]
               transition
-              hover:bg-[var(--app-grid)]
+              bg-grid
             "
           >
             Plan a Safe Route
@@ -149,15 +149,15 @@ export default function Home() {
               cursor-pointer
               rounded-[4px]
               border
-              border-[var(--app-grid-strong)]
+              border-border
               bg-transparent
               px-5
               py-[11px]
               text-sm
               font-semibold
-              text-[var(--app-fg)]
+              text-fg
               transition
-              hover:bg-[var(--app-grid)]
+              bg-grid
             "
           >
             Open Live Map
@@ -166,21 +166,21 @@ export default function Home() {
       </div>
 
       {/* RECENT INCIDENTS */}
-      <div className="rounded-[6px] border border-[var(--app-grid-strong)] bg-[var(--app-bg-deep)] p-6">
-        <h3 className="mb-4 font-[var(--font-display)] text-base">
+      <div className="rounded-[6px] border border-border bg-bg-deep p-6">
+        <h3 className="mb-4 font-display text-base">
           Most recent incidents
         </h3>
 
         {/* LOADING */}
         {incidents === null && (
-          <div className="py-6 text-center text-sm text-[var(--app-muted)]">
+          <div className="py-6 text-center text-sm text-muted">
             Loading…
           </div>
         )}
 
         {/* EMPTY */}
         {incidents?.length === 0 && (
-          <div className="py-6 text-center text-sm text-[var(--app-muted)]">
+          <div className="py-6 text-center text-sm text-muted">
             No incidents reported yet.
           </div>
         )}
@@ -196,7 +196,7 @@ export default function Home() {
               justify-between
               gap-3
               border-t
-              border-[var(--app-grid-strong)]
+              border-border
               py-2.5
             "
           >

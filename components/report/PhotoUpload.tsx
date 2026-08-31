@@ -11,9 +11,7 @@ export default function PhotoUpload({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  function handleFile(
-    e: React.ChangeEvent<HTMLInputElement>
-  ) {
+  function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
 
     if (!file) return;
@@ -47,15 +45,15 @@ export default function PhotoUpload({
             cursor-pointer
             rounded-[4px]
             border
-            border-[var(--app-grid-strong)]
+            border-border
             bg-transparent
             px-5
             py-[11px]
             text-sm
             font-semibold
-            text-[var(--app-fg)]
+            text-fg
             transition
-            hover:bg-[var(--app-grid)]
+            hover:bg-grid
           "
         >
           📷 Add Photo (optional)
@@ -73,7 +71,7 @@ export default function PhotoUpload({
               w-16
               rounded-[4px]
               border
-              border-[var(--app-grid-strong)]
+              border-border
               object-cover
             "
           />
@@ -85,15 +83,15 @@ export default function PhotoUpload({
               cursor-pointer
               rounded-[4px]
               border
-              border-[var(--app-grid-strong)]
+              border-border
               bg-transparent
               px-5
               py-[11px]
               text-sm
               font-semibold
-              text-[var(--app-fg)]
+              text-fg
               transition
-              hover:bg-[var(--app-grid)]
+              hover:bg-grid
             "
           >
             Remove photo
